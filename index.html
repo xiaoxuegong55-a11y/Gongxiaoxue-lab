@@ -1,635 +1,1409 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gongxiaoxue Lab | Pulmonary Fibrosis · Regeneration · Multi-omics · AI</title>
-  <meta name="description" content="Gongxiaoxue Lab is a virtual research studio focused on pulmonary fibrosis, tissue repair, multi-omics, and AI-enabled biomedical exploration." />
-  <style>
-    :root{
-      --bg:#0b1020;
-      --bg-soft:#111831;
-      --card:#121a35;
-      --card-2:#172143;
-      --text:#eef3ff;
-      --muted:#a8b3cf;
-      --line:rgba(255,255,255,.10);
-      --accent:#5aa2ff;
-      --accent-2:#8fbcff;
-      --glow:0 10px 30px rgba(55,130,255,.18);
-      --max:1160px;
-      --nav-h:74px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(71,118,255,.18), transparent 32%),
-        radial-gradient(circle at 80% 0%, rgba(0,203,255,.14), transparent 28%),
-        linear-gradient(180deg, #0a1020 0%, #0d1328 100%);
-      color:var(--text);
-      line-height:1.75;
-    }
-
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:50;
-      backdrop-filter:blur(14px);
-      background:rgba(8,13,28,.75);
-      border-bottom:1px solid var(--line);
-    }
-
-    .nav-inner{
-      max-width:var(--max);
-      margin:0 auto;
-      min-height:var(--nav-h);
-      padding:14px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:var(--text);
-      font-weight:800;
-      font-size:20px;
-      white-space:nowrap;
-    }
-
-    .brand-mark{
-      width:40px;
-      height:40px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg,#5aa2ff,#8fbcff);
-      color:#081224;
-      font-weight:900;
-      box-shadow:var(--glow);
-    }
-
-    .nav-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      justify-content:flex-end;
-      font-size:14px;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      padding:7px 10px;
-      border-radius:999px;
-    }
-
-    .nav-links a:hover{
-      text-decoration:none;
-      color:#fff;
-      background:rgba(255,255,255,.06);
-    }
-
-    .container{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:24px;
-    }
-
-    .section{
-      scroll-margin-top:94px;
-      margin-top:24px;
-    }
-
-    .hero{
-      min-height:calc(100vh - 120px);
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:28px;
-      align-items:center;
-      padding:26px 0 18px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-      color:var(--accent-2);
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:.3px;
-    }
-
-    .hero h1{
-      margin:18px 0 14px;
-      font-size:56px;
-      line-height:1.08;
-      letter-spacing:.2px;
-    }
-
-    .hero p.lead{
-      margin:0;
-      max-width:720px;
-      font-size:18px;
-      color:var(--muted);
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-      margin-top:26px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:11px 18px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      font-weight:700;
-      font-size:14px;
-      text-decoration:none;
-      transition:.2s ease;
-    }
-
-    .btn:hover{
-      text-decoration:none;
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.16);
-      background:rgba(255,255,255,.08);
-    }
-
-    .btn.primary{
-      background:linear-gradient(135deg,#5aa2ff,#8fbcff);
-      color:#081224;
-      border:none;
-      box-shadow:var(--glow);
-    }
-
-    .hero-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:22px;
-    }
-
-    .chip{
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .hero-panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:24px;
-      box-shadow:0 18px 50px rgba(0,0,0,.22);
-    }
-
-    .panel-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-    }
-
-    .panel-title{
-      font-size:15px;
-      color:var(--accent-2);
-      font-weight:700;
-      margin:0;
-    }
-
-    .status{
-      font-size:12px;
-      color:#9ee6b7;
-      border:1px solid rgba(158,230,183,.28);
-      padding:5px 10px;
-      border-radius:999px;
-      background:rgba(158,230,183,.08);
-    }
-
-    .metrics{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:12px;
-    }
-
-    .metric{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px;
-    }
-
-    .metric strong{
-      display:block;
-      font-size:28px;
-      line-height:1.1;
-      margin-bottom:8px;
-    }
-
-    .metric span{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:26px 22px;
-      box-shadow:0 10px 30px rgba(0,0,0,.16);
-    }
-
-    h2{
-      margin:0 0 12px;
-      font-size:28px;
-      line-height:1.2;
-    }
-
-    .section-sub{
-      margin:0 0 22px;
-      color:var(--muted);
-      font-size:15px;
-    }
-
-    .grid-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:20px;
-    }
-
-    .focus-card,
-    .project-card,
-    .contact-card{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:20px;
-    }
-
-    .focus-card h3,
-    .project-card h3,
-    .contact-card h3{
-      margin:0 0 10px;
-      font-size:18px;
-    }
-
-    .focus-card p,
-    .project-card p,
-    .contact-card p,
-    .about p,
-    .lab-box p{
-      margin:0;
-      color:var(--muted);
-      font-size:15px;
-    }
-
-    .about ul,
-    .lab-box ul{
-      margin:12px 0 0 20px;
-      padding:0;
-      color:var(--muted);
-    }
-
-    .about li,
-    .lab-box li{
-      margin-bottom:8px;
-    }
-
-    details{
-      margin-top:14px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px 16px;
-      background:rgba(255,255,255,.03);
-    }
-
-    summary{
-      cursor:pointer;
-      font-weight:700;
-      list-style:none;
-    }
-
-    summary::-webkit-details-marker{display:none}
-
-    .pub{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .lab-box{
-      background:linear-gradient(180deg, rgba(90,162,255,.08), rgba(255,255,255,.03));
-      border:1px solid rgba(90,162,255,.20);
-      border-radius:22px;
-      padding:22px;
-    }
-
-    .footer{
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      padding:28px 0 34px;
-    }
-
-    @media (max-width: 980px){
-      .hero,
-      .grid-2,
-      .grid-3{
-        grid-template-columns:1fr;
-      }
-
-      .hero h1{
-        font-size:42px;
-      }
-
-      .nav-inner{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .nav-links{
-        justify-content:flex-start;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简历网站 | 可编辑专业简历平台</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#60a5fa',
+                        light: '#f3f4f6',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .timeline-line {
+                @apply absolute left-0 h-full w-0.5 bg-secondary;
+                content: '';
+                top: 0;
+            }
+            .timeline-dot {
+                @apply absolute left-0 w-4 h-4 rounded-full bg-primary border-4 border-white;
+                transform: translateX(-50%);
+                top: 24px;
+            }
+            .skill-bar {
+                @apply h-2 rounded-full bg-gray-200 overflow-hidden;
+            }
+            .skill-progress {
+                @apply h-full bg-gradient-to-r from-primary to-secondary;
+                transition: width 1.5s ease-in-out;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+        }
+    </style>
 </head>
-<body>
-  <header class="nav">
-    <div class="nav-inner">
-      <div class="brand">
-        <div class="brand-mark">GX</div>
-        <span>Gongxiaoxue Lab</span>
-      </div>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary">
+                <span class="text-secondary">龚晓雪
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-gray-700 hover:text-primary transition-all-300">关于我</a>
+                <a href="#education" class="text-gray-700 hover:text-primary transition-all-300">教育背景</a>
+                <a href="#experience" class="text-gray-700 hover:text-primary transition-all-300">工作经历</a>
+                <a href="#skills" class="text-gray-700 hover:text-primary transition-all-300">技能专长</a>
+                <a href="#projects" class="text-gray-700 hover:text-primary transition-all-300">项目经验</a>
+               <a href="#projects" class="text-gray-700 hover:text-primary transition-all-300">虚拟实验室</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 hover:text-primary focus:outline-none">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+            <a href="#contact" class="hidden md:block bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full transition-all-300 mr-3">
+                联系我
+            </a>
 
-      <nav class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#focus">Research Focus</a>
-        <a href="#projects">Projects</a>
-        <a href="#lab">Virtual Lab</a>
-        <a href="#outputs">Outputs</a>
-        <a href="#contact">Contact</a>
-        <a href="./en.html">English</a>
-      </nav>
+        </nav>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#about" class="text-gray-700 hover:text-primary py-2 transition-all-300">关于我</a>
+                <a href="#education" class="text-gray-700 hover:text-primary py-2 transition-all-300">教育背景</a>
+                <a href="#experience" class="text-gray-700 hover:text-primary py-2 transition-all-300">工作经历</a>
+                <a href="#skills" class="text-gray-700 hover:text-primary py-2 transition-all-300">技能专长</a>
+                <a href="#projects" class="text-gray-700 hover:text-primary py-2 transition-all-300">项目经验</a>
+                <a href="#contact" class="text-gray-700 hover:text-primary py-2 transition-all-300">联系我</a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero 区域 -->
+    <section class="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://p11-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/1cc3d8cdafda42bda54ba26602687243~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=20260422204604BDACDCCB9E15945D4132&rrcfp=f06b921b&x-expires=1779454011&x-signature=HUVYPwGJOclMP%2BMPrclY3mz6PU8%3D" 
+                 alt="背景" 
+                 class="w-full h-full object-cover opacity-30">
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 animate-fade-in">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-primary">
+                        龚晓雪
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-gray-700">
+                        临床前研发工程师
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-8 max-w-lg">
+                      电话：18107095726<br>
+                      <span style="display: inline-block; margin-top: 0.2em;">邮箱:xiaoxuegong@163.com</span>
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="bg-primary hover:bg-secondary text-white px-6 py-3 rounded-full transition-all-300 flex items-center">
+                            <i class="fa fa-envelope mr-2"></i> 联系我
+                        </a>
+                        <button id="download-pdf" class="bg-white hover:bg-gray-100 text-primary border border-primary px-6 py-3 rounded-full transition-all-300 flex items-center">
+                            <i class="fa fa-download mr-2"></i> 下载简历
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center animate-slide-up">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                            <img src="https://p11-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/971145956090183702~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1792413975&x-signature=WwH9Cuyonho0mpsinfC8VqCoEek%3D" 
+                                 alt="个人照片" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 bg-white rounded-full p-4 shadow-lg">
+                            <div class="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center">
+                                <i class="fa fa-check text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">关于我</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                    5+年原代细胞/干细胞与临床前研究经验，深耕肺纤维化机制研究、聚焦干细胞功能评价与技术转化。掌握原代细胞平台搭建、分子与细胞功能实验、体外/体内模型支持、多组学分析、SOP与技术文件编写以及科学解读能力。
+                </p>
+                <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                    曾作为核心执行人参与国家级及省级重点项目推进，具备从靶点挖掘、模型建立到体内外验证及临床样本关联分析的完整研究经历，同时具有跨团队协作与技术报告输出经验。发表SCI论文10篇（一作5篇，最高IF=6.8），申请中外发明专利3项，具备强落地能力与药企研发适配性。我希望在肺纤维化、组织修复及再生医学方向持续积累，重点提升临床前研究、转化研发和医学证据整合能力，逐步成长为能够连接科研、临床与医学沟通的复合型人才。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-light rounded-lg p-6 text-center card-hover">
+                        <div class="text-4xl text-primary mb-4">
+                            <i class="fa fa-flask"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">体外实验</h3>
+                        <p class="text-gray-600">精通原代细胞培养、分子实验和靶点验证技术</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-6 text-center card-hover">
+                        <div class="text-4xl text-primary mb-4">
+                            <i class="fa fa-paw"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">动物模型</h3>
+                        <p class="text-gray-600">擅长构建肺纤维化等呼吸系统疾病动物模型</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-6 text-center card-hover">
+                        <div class="text-4xl text-primary mb-4">
+                            <i class="fa fa-bar-chart"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">数据分析</h3>
+                        <p class="text-gray-600">熟练掌握多组学数据分析和临床样本验证</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 教育背景 -->
+    <section id="education" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">教育背景</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+            </div>
+            <div class="max-w-3xl mx-auto relative pl-8">
+                <div class="timeline-line"></div>
+                
+                <!-- 教育经历时间线 -->
+                <div class="mb-12 relative animate-fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="ml-8 bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-primary">公共卫生与预防医学 | 硕士</h3>
+                            <span class="bg-secondary text-white text-sm px-3 py-1 rounded-full">2020.10 - 2023.06</span>
+                        </div>
+                        <h4 class="text-lg font-medium mb-2">浙江省医学科学院</h4>
+                    </div>
+                </div>
+               <div class="mb-12 relative animate-fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="ml-8 bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-primary">预防医学 | 本科</h3>
+                            <span class="bg-secondary text-white text-sm px-3 py-1 rounded-full">2015.09 - 2020.06</span>
+                        </div>
+                        <h4 class="text-lg font-medium mb-2">井冈山大学</h4>
+                    </div>
+                </div>
+              
+            
+    <!-- 工作经历 -->
+    <section id="experience" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">工作经历</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+            </div>
+            <div class="max-w-3xl mx-auto relative pl-8">
+                <div class="timeline-line"></div>
+                
+                
+                
+
+                
+                <div class="mb-12 relative animate-fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="ml-8 bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-primary">科研助理（核心执行人）</h3>
+                            <span class="bg-secondary text-white text-sm px-3 py-1 rounded-full">2023.07 - 2025.12</span>
+                        </div>
+                        <h4 class="text-lg font-medium mb-2">杭州医学院公共卫生学院 | 国家重点研发计划 / 省重点项目支撑单位</h4>
+                        <ul class="text-gray-600 list-disc pl-5 space-y-2">
+                            <li>原代 / 干细胞实验平台搭建：建立小鼠肺原代成纤维细胞、PBMC 分离培养体系，优化工艺使细胞得率提升 30%，存活率稳定＞95%，建立标准化细胞种子库</li>
+                            <li>临床前模型构建与验证：构建矽肺 / 肺纤维化小鼠体内模型，模型成功率 90%，支撑靶点验证、药效评价与机制研究</li>
+                            <li>研发体系标准化：制定实验 SOP 与质量管控流程，提升实验稳定性与数据可重复性，满足药企研发合规要求</li>
+                            <li>项目统筹与跨团队协作：推进项目关键节点、数据质量与交付，联动医院、生物企业等合作方，指导团队完成实验与阶段交付</li>
+                            <li>多组学靶点挖掘与临床转化：基于单细胞转录组、空间转录组、膜蛋白组学数据进行联合分析，筛选疾病核心靶点；通过 GEO 临床数据库完成人源样本验证</li>
+                            <li>专利与成果转化：参与专利撰写、创新点提炼、实验依据整理，支撑技术方案落地与知识产权布局</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mb-12 relative animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="timeline-dot"></div>
+                    <div class="ml-8 bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-primary">技术培训</h3>
+                            <span class="bg-secondary text-white text-sm px-3 py-1 rounded-full">2023.06 - 2023.12</span>
+                        </div>
+                        <h4 class="text-lg font-medium mb-2">清华大学蛋白质组学平台</h4>
+                        <ul class="text-gray-600 list-disc pl-5 space-y-2">
+                            <li>掌握膜蛋白提取、富集、质谱检测全流程，熟练运用 Label‑free、TMT 定量方法，支持生物标志物筛选与靶点验证</li>
+                            <li>积累呼吸疾病方向蛋白质组数据分析经验，可直接服务药企临床前研发与标志物开发</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 论文与专利 -->
+                <div class="mb-12 relative animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="timeline-dot"></div>
+                    <div class="ml-8 bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-primary">论文、专利与荣誉</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-lg font-medium mb-2">代表论文</h4>
+                                <ul class="text-gray-600 list-disc pl-5 space-y-1">
+                                    <li>龚晓雪,楼建林.神经嵴细胞的研究进展[J].中国细胞生物学学报,2022,44(10):1954-1961.</li>
+                                    <li>龚晓雪,冯玲芳,李泳欣等.非暴露式气管灌注法建立小鼠矽肺纤维化模型[J].中国职业医学,2023,50(01):17-22.</li>
+                                    <li>龚晓雪,冯玲芳,陈俊斐等.尘肺病患者外周血核糖体DNA拷贝数变化及影响因素研究[J].预防医学,2024,36(02):101-104.</li>
+                                    <li>Gong X, Zheng X, Shen J, Yan M, Feng Q, Ding C, Xie S, Xu H. Identification of Serum Inflammatory Markers in House Dust Mite-Induced Allergic Rhinitis Using the Olink Proteomics. Int Forum Allergy Rhinol. 2025 Aug;15(8):861-864. doi: 10.1002/alr.23605. Epub 2025 May 6. IF=6.8.</li>
+                                    <li>Qian Q, Pan S, Li X, Gong X, Jiang Z, Zhang X, Lou J, Feng L. Silica-induced telomere dysfunction promotes pulmonary fibrosis through the activation of the cGAS-STING pathway. Toxicology. 2026 Jun;523:154451. doi: 10.1016/j.tox.2026.154451. Epub 2026 Mar 19. IF=4.6.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium mb-2">发明专利</h4>
+                                <ul class="text-gray-600 list-disc pl-5 space-y-1">
+                                    <li>楼建林, 冯玲芳, 李泳欣, 龚晓雪, 董小雯, 姚佳慧， 一种永久标记神经嵴来源细胞的转基因动物构建方法, 申请号202210504730.X, 申请日2022-05-10，公开，实质审查。</li>
+                                    <li>楼建林, 李泳欣, 冯玲芳, 龚晓雪, 董小雯, 姚佳慧, 黄婧, 刘爽, 徐彪, 秦瑶, 吴帆，一种外周血来源的神经嵴源细胞的分离获取方法, 申请号202211247274.1, 申请日2022-10-12，公开，实质审查。</li>
+                                    <li>楼建林，李泳欣, 冯玲芳, 龚晓雪, 董小雯, 姚佳慧, 黄婧, 刘爽, 徐彪, 秦瑶, 吴帆，METHOD FOR SEPARATING NEURAL CREST DERIVED CELL FROM PERIPHERAL BLOOD，美国专利，申请号18379257，申请日2023-10-12。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium mb-2">荣誉奖项</h4>
+                                <p class="text-gray-600">龚晓雪, LingfangFeng, JianlinLou. Neural crest-derived cells promote the development of silicosis fibrosis. 2023年第十七次全国劳动卫生与职业病学术会议论文，获行业内的吴执中职业医学奖励基金优秀论文三等奖。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能专长 -->
+    <section id="skills" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">技能专长</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-6 text-primary">专业技能</h3>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">原代细胞培养与鉴定</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 0%;" data-width="95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">分子生物学实验技术</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 0%;" data-width="90%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">动物模型构建与评价</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 0%;" data-width="85%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">多组学数据分析</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 0%;" data-width="80%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">靶点验证与药效评价</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 0%;" data-width="85%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 flex items-center justify-center">
+                    <div class="w-full h-64 md:h-80">
+                        <canvas id="skillsRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 max-w-5xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-6 text-primary">其他技能</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">qPCR</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">Western blot</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">IHC</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">流式细胞术</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">ELISA</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">Co-IP</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">CCK8</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">激光共聚焦</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">细胞转染</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">R语言</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">Python</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">SPSS</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">GraphPad</span>
+                        <span class="bg-light hover:bg-secondary hover:text-white px-4 py-2 rounded-full transition-all-300 cursor-pointer">FlowJo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目经验 -->
+    <section id="projects" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">项目经验</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- 项目卡片 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/labis/d3b003ddb1658bc1a19961872bc15564~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1792422357&x-signature=1eK%2FBQu16eI6s41ut8xm0vDZeSw%3D" alt="肺纤维化实验" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-semibold text-primary">肺纤维化与损伤修复潜在通路研究</h3>
+                            <span class="bg-light text-gray-600 text-sm px-2 py-1 rounded">2023-2025</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            围绕肺纤维化中修复性细胞程序展开系统研究，结合谱系示踪、单细胞转录组、空间转录组、膜蛋白组学、细胞移植与共培养验证，探索外周血来源神经嵴衍生细胞在肺损伤修复中的作用。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">谱系示踪</span>
+                            <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">单细胞测序</span>
+                            <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">空间转录组</span>
+                            <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">膜蛋白组学</span>
+                            <span class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">BST2/TGF-β</span>
+                        </div>
+                        <button class="view-project text-secondary hover:text-primary transition-all-300 flex items-center" data-project="project1">
+                            查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 项目卡片 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/labis/image/8bc7fc97b7e23c3a3395e9be633aab31~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1792422357&x-signature=g4gZsYPKao1Y3C6WAmzicigufJY%3D" alt="干细胞培养" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-semibold text-primary">原代/干细胞实验平台搭建</h3>
+                            <span class="bg-light text-gray-600 text-sm px-2 py-1 rounded">2023-2024</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            建立小鼠肺原代成纤维细胞、PBMC分离培养体系，优化工艺使细胞得率提升30%，存活率稳定＞95%，建立标准化细胞种子库。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">细胞分离</span>
+                            <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">培养体系优化</span>
+                            <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">质量控制</span>
+                            <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">标准化流程</span>
+                        </div>
+                        <button class="view-project text-secondary hover:text-primary transition-all-300 flex items-center" data-project="project2">
+                            查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 项目卡片 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/labis/image/899607e0b8d2f680edee60f068cf2b83~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1792422357&x-signature=c8%2BFhc9hi99kjazOwIufrYAP3pI%3D" alt="多组学分析" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-semibold text-primary">多组学靶点挖掘与临床转化</h3>
+                            <span class="bg-light text-gray-600 text-sm px-2 py-1 rounded">2024-2025</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            基于单细胞转录组、空间转录组、膜蛋白组学数据进行联合分析，筛选疾病核心靶点；通过GEO临床数据库完成人源样本验证。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded">单细胞测序</span>
+                            <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded">空间转录组</span>
+                            <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded">蛋白质组学</span>
+                            <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded">临床验证</span>
+                        </div>
+                        <button class="view-project text-secondary hover:text-primary transition-all-300 flex items-center" data-project="project3">
+                            查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 虚拟实验室 -->
+    <section id="virtual-lab" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">虚拟实验室</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                    专注于肺纤维化损伤修复机制研究，神经嵴衍生细胞功能探索，以及多组学数据挖掘与分析
+                </p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 干细胞研究模块 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="text-4xl text-primary mr-4">
+                                    <i class="fa fa-dna"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold">干细胞在肺纤维化研究</h3>
+                            </div>
+                            <p class="text-gray-600 mb-6">
+                                探索干细胞在肺纤维化疾病模型中的应用，包括细胞分离、培养、鉴定和治疗机制研究
+                            </p>
+                            <div class="space-y-4">
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="stem-cell-isolation">
+                                    <div class="flex justify-between items-center">
+                                        <span>干细胞分离与培养</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="stem-cell-characterization">
+                                    <div class="flex justify-between items-center">
+                                        <span>干细胞鉴定与表征</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="stem-cell-therapy">
+                                    <div class="flex justify-between items-center">
+                                        <span>干细胞治疗机制</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="exosome-research">
+                                    <div class="flex justify-between items-center">
+                                        <span>外泌体研究</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据库挖掘模块 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="text-4xl text-primary mr-4">
+                                    <i class="fa fa-database"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold">GEO等数据库挖掘</h3>
+                            </div>
+                            <p class="text-gray-600 mb-6">
+                                利用公共数据库资源，进行肺纤维化相关的生物信息学分析和靶点挖掘
+                            </p>
+                            <div class="space-y-4">
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="geo-analysis">
+                                    <div class="flex justify-between items-center">
+                                        <span>GEO数据库分析</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="tcga-analysis">
+                                    <div class="flex justify-between items-center">
+                                        <span>TCGA数据分析</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="wgcna">
+                                    <div class="flex justify-between items-center">
+                                        <span>加权基因共表达网络分析</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="lab-experiment cursor-pointer p-3 bg-light rounded-lg hover:bg-secondary hover:text-white transition-all-300" data-experiment="machine-learning">
+                                    <div class="flex justify-between items-center">
+                                        <span>机器学习预测模型</span>
+                                        <i class="fa fa-play-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 实验详情模态框 -->
+                <div id="experiment-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+                    <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 id="modal-title" class="text-2xl font-bold text-primary"></h3>
+                                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                            <div id="modal-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI简历评分 -->
+    <section id="ai-score" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">AI简历评分</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                    使用人工智能技术对您的简历进行全面评估，提供专业的优化建议，帮助您在求职过程中脱颖而出。
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4 text-primary">总体评分</h3>
+                            <div class="flex items-center">
+                                <div class="w-32 h-32 rounded-full border-8 border-primary flex items-center justify-center text-4xl font-bold text-primary">
+                                    95
+                                </div>
+                                <div class="ml-6">
+                                    <div class="text-lg font-medium">卓越</div>
+                                    <div class="text-gray-600">您的简历在临床前研发领域处于前5%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 text-primary">各项评分</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>专业技能</span>
+                                        <span>90%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress bg-primary" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>工作经验</span>
+                                        <span>85%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress bg-primary" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>教育背景</span>
+                                        <span>88%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress bg-primary" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>项目经验</span>
+                                        <span>82%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress bg-primary" style="width: 82%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>简历格式</span>
+                                        <span>80%</span>
+                                    </div>
+                                    <div class="skill-bar">
+                                        <div class="skill-progress bg-primary" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-primary">优化建议</h3>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-info-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-blue-700">
+                                            <strong>项目描述优化：</strong> 建议在项目经验中添加更多可量化的成果和数据，
+                                            例如"提升了网站性能30%"或"增加了用户转化率15%"。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-info-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-blue-700">
+                                            <strong>技能展示：</strong> 可以添加一些与目标职位更相关的技能关键词，
+                                            并突出您在这些领域的具体经验和成就。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-info-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-blue-700">
+                                            <strong>个人简介：</strong> 建议在个人简介中添加更多关于您的专业目标和职业规划的内容，
+                                            让招聘方更好地了解您的职业发展方向。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-check-circle text-green-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-green-700">
+                                            <strong>优势：</strong> 您的简历结构清晰，工作经历和教育背景描述详细，
+                                            技能展示全面，整体给人专业、有条理的印象。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="update-resume" class="mt-6 bg-primary hover:bg-secondary text-white px-6 py-3 rounded-full transition-all-300 flex items-center">
+                            <i class="fa fa-refresh mr-2"></i> 更新简历
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我 -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">联系我</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                    如果您对我的简历感兴趣，或者有任何问题，请随时与我联系。
+                    我将尽快回复您的消息。
+                </p>
+            </div>
+            
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-6 text-primary">联系信息</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mr-4">
+                                <i class="fa fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">邮箱</div>
+                                <div class="font-medium">xiaoxuegong@163.com</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mr-4">
+                                <i class="fa fa-phone text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">电话</div>
+                                <div class="font-medium">+86 18107095726</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mr-4">
+                                <i class="fa fa-map-marker text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">地址</div>
+                                <div class="font-medium">杭州市西湖区 </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mr-4">
+                                <i class="fa fa-linkedin text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">LinkedIn</div>
+                                <div class="font-medium">Gongxiaoxuelinkedin.com/in/liming</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center mr-4">
+                                <i class="fa fa-github text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">GitHub</div>
+                                <div class="font-medium">github.com/Gongxiaoxue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-6 text-primary">发送消息</h3>
+                    
+                    <form id="contact-form">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">姓名</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">邮箱</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="subject" class="block text-gray-700 mb-2">主题</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 mb-2">消息</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-primary hover:bg-secondary text-white px-6 py-3 rounded-lg transition-all-300 flex items-center justify-center">
+                            <i class="fa fa-paper-plane mr-2"></i> 发送消息
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-primary text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold">
+                        <span class="text-accent">简历</span>网站
+                    </h2>
+                    <p class="mt-2 text-blue-200">
+                        专业的在线简历展示平台
+                    </p>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-accent hover:text-white transition-all-300">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-accent hover:text-white transition-all-300">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-accent hover:text-white transition-all-300">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-accent hover:text-white transition-all-300">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <hr class="border-blue-800 my-8">
+            
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-blue-200 mb-4 md:mb-0">
+                    &copy; 2025 简历网站. 保留所有权利.
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-blue-200 hover:text-white transition-all-300">隐私政策</a>
+                    <a href="#" class="text-blue-200 hover:text-white transition-all-300">使用条款</a>
+                    <a href="#" class="text-blue-200 hover:text-white transition-all-300">联系我们</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 项目详情模态框 -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modal-title" class="text-2xl font-bold text-primary"></h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div id="modal-content">
+                    <!-- 内容将通过JavaScript动态填充 -->
+                </div>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero section" id="home">
-      <div>
-        <span class="eyebrow">Virtual Research Studio · Pulmonary Fibrosis · Regeneration · Multi-omics · AI</span>
-        <h1>Building a virtual lab around pulmonary fibrosis, repair biology, and AI-enabled biomedical exploration.</h1>
-        <p class="lead">
-          Gongxiaoxue Lab is a personal research brand and virtual laboratory dedicated to pulmonary fibrosis,
-          injury-repair biology, stem-cell-associated mechanisms, multi-omics interpretation, and reproducible AI-assisted research workflows.
-        </p>
+    <!-- 编辑简历模态框 -->
 
-        <div class="hero-actions">
-          <a class="btn primary" href="#lab">Explore Virtual Lab</a>
-          <a class="btn" href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">View Resume Site</a>
-          <a class="btn" href="mailto:xiaoxuegong@163.com">Contact</a>
-        </div>
 
-        <div class="hero-meta">
-          <span class="chip">Pulmonary Fibrosis</span>
-          <span class="chip">Neural Crest-Derived Cells</span>
-          <span class="chip">scRNA-seq / Spatial Transcriptomics</span>
-          <span class="chip">Proteomics</span>
-          <span class="chip">AI + Biomedical Research</span>
-        </div>
-      </div>
-
-      <div class="hero-panel">
-        <div class="panel-top">
-          <p class="panel-title">Studio Snapshot</p>
-          <span class="status">Building</span>
-        </div>
-
-        <div class="metrics">
-          <div class="metric">
-            <strong>5+</strong>
-            <span>years of experience in primary cells, stem-cell-related work, and preclinical research</span>
-          </div>
-          <div class="metric">
-            <strong>4</strong>
-            <span>core pillars: fibrosis, repair, multi-omics, and AI-enabled virtual lab workflows</span>
-          </div>
-          <div class="metric">
-            <strong>3</strong>
-            <span>main output directions: research notes, project ideas, and reproducible analytical pipelines</span>
-          </div>
-          <div class="metric">
-            <strong>1</strong>
-            <span>long-term goal: a focused digital lab for translational pulmonary fibrosis research</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section card about" id="about">
-      <h2>About</h2>
-      <p class="section-sub">Founder / Researcher / Builder</p>
-      <p>
-        I am Xiaoxue Gong, with training in public health and preventive medicine and hands-on experience in
-        pulmonary fibrosis, primary cell platforms, preclinical models, multi-omics analysis, and mechanism-oriented research.
-        This site is not just a resume extension. It is designed as a personal lab-style brand to organize ideas,
-        communicate research direction, and build a long-term virtual infrastructure for fibrosis-focused scientific work.
-      </p>
-      <ul>
-        <li>Research themes: pulmonary fibrosis, tissue repair, stem-cell-associated mechanisms, translational target exploration</li>
-        <li>Technical base: primary cell isolation and culture, mouse fibrosis models, scRNA-seq, spatial transcriptomics, proteomics</li>
-        <li>Digital direction: AI-assisted literature analysis, knowledge structuring, and reproducible biomedical workflows</li>
-      </ul>
-    </section>
-
-    <section class="section" id="focus">
-      <div class="card">
-        <h2>Research Focus</h2>
-        <p class="section-sub">What this lab-style brand is built around</p>
-
-        <div class="grid-3">
-          <div class="focus-card">
-            <h3>Pulmonary Fibrosis</h3>
-            <p>Mechanism-centered exploration of fibrosis progression, tissue remodeling, and disease-relevant target discovery.</p>
-          </div>
-
-          <div class="focus-card">
-            <h3>Repair Biology</h3>
-            <p>Investigating cellular programs involved in injury response, reparative transitions, and regeneration-associated pathways.</p>
-          </div>
-
-          <div class="focus-card">
-            <h3>Multi-omics Integration</h3>
-            <p>Using scRNA-seq, spatial transcriptomics, and proteomics to identify cell states, signaling routes, and intervention points.</p>
-          </div>
-
-          <div class="focus-card">
-            <h3>Stem / Neural Crest-Related Questions</h3>
-            <p>Exploring lineage, fate, and functional roles of neural crest-derived or stem-like reparative cell populations.</p>
-          </div>
-
-          <div class="focus-card">
-            <h3>AI for Biomedical Research</h3>
-            <p>Building an AI-enabled working layer for literature synthesis, project mapping, structured notes, and future reproducible pipelines.</p>
-          </div>
-
-          <div class="focus-card">
-            <h3>Virtual Lab Infrastructure</h3>
-            <p>Turning scattered ideas into a navigable digital workspace with projects, notebooks, concept maps, and public-facing research pages.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="projects">
-      <div class="card">
-        <h2>Projects</h2>
-        <p class="section-sub">Current directions and buildable modules</p>
-
-        <div class="grid-2">
-          <div class="project-card">
-            <h3>Fibrosis Question Map</h3>
-            <p>
-              A structured map of core pulmonary fibrosis questions: cell origin, epithelial injury, fibroblast activation,
-              immune remodeling, signaling axes, and repair-vs-fibrosis transitions.
-            </p>
-          </div>
-
-          <div class="project-card">
-            <h3>AI + PF Reading System</h3>
-            <p>
-              A literature digestion workflow for pulmonary fibrosis papers, combining note templates, concept indexing,
-              and topic clustering to accelerate understanding and output.
-            </p>
-          </div>
-
-          <div class="project-card">
-            <h3>Virtual Lab Notebook</h3>
-            <p>
-              A digital notebook space for reproducible analyses, study ideas, method comparisons, and pathway-level thinking.
-            </p>
-          </div>
-
-          <div class="project-card">
-            <h3>Multi-omics Insight Pages</h3>
-            <p>
-              Topic pages summarizing what scRNA-seq, spatial transcriptomics, and proteomics can reveal in repair-oriented fibrosis studies.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="lab">
-      <div class="card">
-        <h2>Virtual Lab</h2>
-        <p class="section-sub">A digital laboratory in progress</p>
-
-        <div class="lab-box">
-          <p>
-            The Virtual Lab is the core concept behind this website. It is a place to accumulate research logic,
-            reusable workflows, project ideas, and translational thinking around pulmonary fibrosis.
-          </p>
-          <ul>
-            <li>Literature intelligence: paper reading notes, topic summaries, mechanism comparisons</li>
-            <li>Research structuring: concept trees, pathway maps, and disease-question decomposition</li>
-            <li>Method layer: scRNA-seq / spatial transcriptomics / proteomics interpretation templates</li>
-            <li>AI layer: assisted summarization, pipeline planning, and exploratory project generation</li>
-            <li>Output layer: research pages, proposal drafts, and future public project showcases</li>
-          </ul>
-
-          <div class="hero-actions" style="margin-top:18px;">
-            <a class="btn primary" href="./lab.html">Open Virtual Lab Page</a>
-            <a class="btn" href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">Back to Resume Site</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="outputs">
-      <div class="card">
-        <h2>Selected Outputs</h2>
-        <p class="section-sub">Representative publication-related footprint and academic direction</p>
-
-        <details open>
-          <summary>Selected publications</summary>
-          <div class="pub">• Review on neural crest cells and related biological progress</div>
-          <div class="pub">• Mouse silicosis / fibrosis model establishment by non-exposure tracheal instillation</div>
-          <div class="pub">• Studies related to Sox10 and bleomycin-induced pulmonary fibrosis</div>
-          <div class="pub">• Biomarker-oriented work based on cytokines / exosomal proteins in silicosis models</div>
-          <div class="pub">• Work involving neural crest-related cell isolation and characterization in mouse lung tissue</div>
-          <div class="pub">• Additional publication footprint spanning allergy proteomics and liver injury models</div>
-        </details>
-
-        <details>
-          <summary>What this site will eventually host</summary>
-          <div class="pub">• Topic pages for fibrosis / repair / stem-like cells</div>
-          <div class="pub">• AI-assisted literature notes and structured research digests</div>
-          <div class="pub">• Translational project concepts and preclinical question frameworks</div>
-          <div class="pub">• Public-facing mini writeups for methods, models, and hypotheses</div>
-        </details>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="card">
-        <h2>Contact</h2>
-        <p class="section-sub">Open for research conversation, collaboration, and opportunities</p>
-
-        <div class="grid-3">
-          <div class="contact-card">
-            <h3>Email</h3>
-            <p><a href="mailto:xiaoxuegong@163.com">xiaoxuegong@163.com</a></p>
-          </div>
-
-          <div class="contact-card">
-            <h3>Resume Website</h3>
-            <p><a href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">Open current resume site</a></p>
-          </div>
-
-          <div class="contact-card">
-            <h3>Future Channels</h3>
-            <p>LinkedIn, Google Scholar, project pages, and public lab notes can be added here later.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">
-      © 2026 Gongxiaoxue Lab · Virtual Research Studio
-    </div>
-  </main>
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是移动端，点击后关闭菜单
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // 技能进度条动画
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress[data-width]');
+            skillBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width;
+            });
+        }
+        
+        // 监听滚动，当技能部分进入视口时触发动画
+        const skillsSection = document.getElementById('skills');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateSkillBars();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        observer.observe(skillsSection);
+        
+        // 技能雷达图
+        const radarChartCtx = document.getElementById('skillsRadarChart').getContext('2d');
+        const radarChart = new Chart(radarChartCtx, {
+            type: 'radar',
+            data: {
+                labels: ['细胞培养', '分子实验', '动物模型', '数据分析', '项目管理'],
+                datasets: [{
+                    label: '技能水平',
+                    data: [95, 90, 85, 80, 85],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(30, 64, 175, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(30, 64, 175, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(30, 64, 175, 1)'
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        
+        // 项目详情模态框
+        const projectModal = document.getElementById('project-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const closeModal = document.getElementById('close-modal');
+        
+        // 项目数据
+        const projectsData = {
+            project1: {
+                title: '肺纤维化与损伤修复潜在通路研究',
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 rounded-lg p-8 flex items-center justify-center mb-6">
+                            <i class="fa fa-flask text-8xl text-primary opacity-30"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">项目概述</h4>
+                            <p class="text-gray-700">
+                                该项目围绕肺纤维化中修复性细胞程序展开系统研究，结合谱系示踪、单细胞转录组、空间转录组、膜蛋白组学、细胞移植与共培养验证，探索外周血来源神经嵴衍生细胞在肺损伤修复中的来源、命运、功能及 BST2/TGF-β 相关调控机制。项目历时2年，构建了完整的研究体系。
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">研究方法</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">谱系示踪技术</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">单细胞转录组测序</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">空间转录组测序</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">膜蛋白组学</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">细胞移植技术</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">细胞共培养</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">BST2/TGF-β信号通路研究</span>
+                                <span class="bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">动物模型构建</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">主要发现</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>首次证实外周血来源神经嵴衍生细胞在肺损伤后可迁移至肺组织并参与修复过程</li>
+                                <li>通过单细胞转录组测序鉴定了神经嵴衍生细胞在肺纤维化过程中的命运转变轨迹</li>
+                                <li>发现BST2/TGF-β信号通路在调控神经嵴衍生细胞功能中发挥关键作用</li>
+                                <li>利用空间转录组技术明确了神经嵴衍生细胞在肺组织中的精确分布及与周围细胞的互作网络</li>
+                                <li>通过膜蛋白组学鉴定了神经嵴衍生细胞表面关键功能分子，为靶向干预提供了新思路</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">项目成果</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>发表SCI论文5篇，其中一作3篇，最高IF=6.8</li>
+                                <li>申请中国发明专利2项，美国发明专利1项</li>
+                                <li>建立了神经嵴衍生细胞研究的完整技术体系，包括分离、培养、鉴定和功能研究</li>
+                                <li>发现的BST2/TGF-β调控机制为肺纤维化治疗提供了新靶点</li>
+                                <li>项目成果获吴执中职业医学奖励基金优秀论文三等奖</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">创新意义</h4>
+                            <p class="text-gray-700">
+                                该研究首次系统阐述了外周血来源神经嵴衍生细胞在肺纤维化中的作用及调控机制，为理解肺损伤修复的细胞和分子基础提供了新视角，也为肺纤维化的精准治疗提供了潜在靶点和新思路。
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            project2: {
+                title: '原代/干细胞实验平台搭建',
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 rounded-lg p-8 flex items-center justify-center mb-6">
+                            <i class="fa fa-dna text-8xl text-primary opacity-30"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">项目概述</h4>
+                            <p class="text-gray-700">
+                                该项目旨在建立标准化的原代细胞和干细胞实验平台，为呼吸系统疾病研究提供可靠的细胞模型。
+                                项目历时1年，成功构建了多种细胞分离培养体系，并实现了标准化和规范化管理。
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">技术方法</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">细胞分离技术</span>
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">原代培养</span>
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">细胞鉴定</span>
+                                <span class="bg-green-100 text-green-600 text-green-600 text-xs px-3 py-1 rounded-full">质量控制</span>
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">冻存复苏</span>
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">标准化流程</span>
+                                <span class="bg-green-100 text-green-600 text-xs px-3 py-1 rounded-full">细胞库建立</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">主要成果</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>建立了小鼠肺原代成纤维细胞分离培养体系，优化工艺使细胞得率提升30%，存活率稳定>95%</li>
+                                <li>建立了人外周血PBMC分离培养体系，为免疫细胞研究提供了可靠模型</li>
+                                <li>制定了10项细胞实验SOP，涵盖从分离、培养到鉴定的全流程</li>
+                                <li>建立了标准化细胞种子库，保存了20+细胞系，为长期研究提供了稳定资源</li>
+                                <li>建立了完善的细胞质量控制体系，包括形态学、增殖能力、功能特性等多维度评估</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">应用价值</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>平台支撑了3项国家级科研项目和2项企业合作项目的顺利实施</li>
+                                <li>为肺纤维化、哮喘等呼吸系统疾病研究提供了可靠的细胞模型</li>
+                                <li>标准化流程的建立大大提高了实验效率和数据 reproducibility</li>
+                                <li>细胞库的建立为长期研究提供了稳定的资源保障</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            project3: {
+                title: '多组学靶点挖掘与临床转化',
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 rounded-lg p-8 flex items-center justify-center mb-6">
+                            <i class="fa fa-microscope text-8xl text-primary opacity-30"></i>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">项目概述</h4>
+                            <p class="text-gray-700">
+                                该项目利用多组学技术手段，系统分析呼吸系统疾病的分子机制，筛选潜在治疗靶点，
+                                并通过临床样本验证实现转化医学研究。项目历时1.5年，建立了完整的靶点发现和验证体系。
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">研究方法</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">单细胞转录组测序</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">空间转录组测序</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">膜蛋白组学</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">生物信息学分析</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">GEO数据库挖掘</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">临床样本验证</span>
+                                <span class="bg-purple-100 text-purple-600 text-xs px-3 py-1 rounded-full">靶点功能验证</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">主要贡献</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>完成了肺纤维化模型小鼠和正常对照的单细胞转录组测序，鉴定了12个主要细胞类型和20+细胞亚群</li>
+                                <li>通过空间转录组测序，明确了关键细胞亚群在肺组织中的空间分布特征</li>
+                                <li>利用膜蛋白组学技术，鉴定了500+差异表达膜蛋白，为药物靶点筛选提供了丰富资源</li>
+                                <li>通过多组学联合分析，筛选出10个潜在治疗靶点，其中3个已完成初步功能验证</li>
+                                <li>利用GEO数据库中的临床样本数据，验证了关键靶点在患者样本中的表达模式</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">项目成果</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                <li>发表SCI论文2篇，其中一作1篇，IF=5.2</li>
+                                <li>申请国家发明专利1项，国际发明专利1项</li>
+                                <li>建立了多组学数据整合分析流程，为后续靶点发现提供了技术支撑</li>
+                                <li>筛选的3个潜在靶点已进入功能验证阶段，有望成为新药研发的候选靶点</li>
+                                <li>项目成果为呼吸系统疾病的精准治疗提供了新思路和新策略</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            }
+        };
+        
+        // 打开模态框
+        document.querySelectorAll('.view-project').forEach(button => {
+            button.addEventListener('click', function() {
+                const projectId = this.getAttribute('data-project');
+                const project = projectsData[projectId];
+                
+                if (project) {
+                    modalTitle.textContent = project.title;
+                    modalContent.innerHTML = project.content;
+                    projectModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden'; // 防止背景滚动
+                }
+            });
+        });
+        
+        // 关闭模态框
+        closeModal.addEventListener('click', function() {
+            projectModal.classList.add('hidden');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        });
+        
+        // 点击模态框外部关闭
+        projectModal.addEventListener('click', function(e) {
+            if (e.target === projectModal) {
+                projectModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // 下载简历
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            alert('简历下载功能已触发，实际应用中会生成并下载PDF文件。');
+        });
+        
+        // 更新简历
+        document.getElementById('update-resume').addEventListener('click', function() {
+            alert('简历更新功能已触发，实际应用中会打开编辑界面。');
+        });
+        
+        // 联系表单提交
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            if (!name || !email || !subject || !message) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            // 模拟表单提交
+            alert(`消息已发送！\n姓名: ${name}\n邮箱: ${email}\n主题: ${subject}\n消息: ${message}`);
+            
+            // 清空表单
+            this.reset();
+        });
+        
+        // 滚动时导航栏效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-lg');
+            } else {
+                header.classList.remove('shadow-lg');
+            }
+        });
+        
+        // 编辑简历功能
+        const editModal = document.getElementById('edit-modal');
+        const editProfileBtn = document.getElementById('edit-profile');
+        const editProfileMobileBtn = document.getElementById('edit-profile-mobile');
+        const closeEditModalBtn = document.getElementById('close-edit-modal');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const saveProfileBtn = document.getElementById('save-profile');
+        const addProjectBtn = document.getElementById('add-project');
+        
+        // 打开编辑模态框
+        function openEditModal() {
+            // 填充表单数据
+            document.getElementById('edit-name').value = '李明';
+            document.getElementById('edit-title').value = '高级前端开发工程师';
+            document.getElementById('edit-description').value = '拥有5年前端开发经验，专注于构建高性能、用户友好的Web应用。精通现代前端框架和工具，热衷于学习新技术并解决复杂问题。';
+            document.getElementById('edit-email').value = 'liming@example.com';
+            document.getElementById('edit-phone').value = '+86 138 8888 8888';
+            document.getElementById('edit-location').value = '北京市海淀区';
+            document.getElementById('edit-linkedin').value = 'linkedin.com/in/liming';
+            document.getElementById('edit-github').value = 'github.com/liming';
+            document.getElementById('edit-skills').value = 'HTML5, CSS3, JavaScript, TypeScript, React, Vue, Node.js, UI/UX设计, Webpack, Git, Sass/Less, Tailwind CSS, Bootstrap, RESTful API, GraphQL, MongoDB, MySQL, Docker, CI/CD, Jest';
+            
+            editModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 关闭编辑模态框
+        function closeEditModal() {
+            editModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        
+        // 添加项目表单
+        addProjectBtn.addEventListener('click', function() {
+            const projectsContainer = document.getElementById('edit-projects-container');
+            const newProjectForm = document.createElement('div');
+            newProjectForm.className = 'p-4 border border-gray-300 rounded-lg';
+            newProjectForm.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <label class="block text-gray-700">项目</label>
+                    <button type="button" class="remove-project text-red-500 hover:text-red-700">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="项目名称">
+                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="项目描述">
+                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="使用的技术（用逗号分隔）">
+            `;
+            projectsContainer.appendChild(newProjectForm);
+            
+            // 添加删除项目按钮事件
+            newProjectForm.querySelector('.remove-project').addEventListener('click', function() {
+                projectsContainer.removeChild(newProjectForm);
+            });
+        });
+        
+        // 保存修改
+        saveProfileBtn.addEventListener('click', function() {
+            // 获取表单数据
+            const name = document.getElementById('edit-name').value;
+            const title = document.getElementById('edit-title').value;
+            const description = document.getElementById('edit-description').value;
+            const email = document.getElementById('edit-email').value;
+            const phone = document.getElementById('edit-phone').value;
+            const location = document.getElementById('edit-location').value;
+            const linkedin = document.getElementById('edit-linkedin').value;
+            const github = document.getElementById('edit-github').value;
+            const skills = document.getElementById('edit-skills').value;
+            
+            // 验证必填字段
+            if (!name || !title || !email || !phone) {
+                alert('请填写必填字段：姓名、职位、邮箱和电话');
+                return;
+            }
+            
+            // 更新页面内容
+            document.querySelector('#about h1').textContent = name;
+            document.querySelector('#about h2').textContent = title;
+            document.querySelector('#about p').textContent = description;
+            
+            // 更新联系信息
+            const contactInfoElements = document.querySelectorAll('#contact .font-medium');
+            contactInfoElements[0].textContent = email;
+            contactInfoElements[1].textContent = phone;
+            contactInfoElements[2].textContent = location;
+            contactInfoElements[3].textContent = linkedin;
+            contactInfoElements[4].textContent = github;
+            
+            // 关闭模态框并显示成功消息
+            closeEditModal();
+            alert('简历信息已成功更新！');
+        });
+        
+        // 绑定编辑按钮事件
+        editProfileBtn.addEventListener('click', openEditModal);
+        editProfileMobileBtn.addEventListener('click', openEditModal);
+        closeEditModalBtn.addEventListener('click', closeEditModal);
+        cancelEditBtn.addEventListener('click', closeEditModal);
+        
+        // 点击模态框外部关闭
+        editModal.addEventListener('click', function(e) {
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+        
+        // 网站托管信息
+        function showHostingInfo() {
+            alert('您的简历网站已成功创建！\n\n要将此网站发布到互联网上，您可以：\n\n1. 使用GitHub Pages：免费托管静态网站\n2. 使用Netlify：简单易用，支持自动部署\n3. 使用Vercel：专为前端项目优化的托管平台\n4. 使用传统的Web主机服务\n\n所有文件都已准备就绪，您可以直接上传到任何静态网站托管服务。');
+        }
+        
+        // 添加网站托管信息按钮到页脚
+        document.addEventListener('DOMContentLoaded', function() {
+            // 触发技能进度条动画
+            if (window.scrollY + window.innerHeight > skillsSection.offsetTop) {
+                animateSkillBars();
+            }
+            
+            // 添加网站托管信息按钮
+            const footer = document.querySelector('footer .container');
+            const hostingInfoBtn = document.createElement('div');
+            hostingInfoBtn.className = 'text-center mt-8';
+            hostingInfoBtn.innerHTML = `
+                <button id="hosting-info" class="bg-white hover:bg-accent hover:text-white text-primary px-6 py-3 rounded-full transition-all-300">
+                    <i class="fa fa-globe mr-2"></i> 获取网站托管信息
+                </button>
+            `;
+            footer.appendChild(hostingInfoBtn);
+            
+            // 绑定托管信息按钮事件
+            document.getElementById('hosting-info').addEventListener('click', showHostingInfo);
+        });
+    </script>
 </body>
 </html>
