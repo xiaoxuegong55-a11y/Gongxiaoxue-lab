@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gongxiaoxue Lab | Pulmonary Fibrosis · Regeneration · Multi-omics · AI</title>
+  <meta name="description" content="Gongxiaoxue Lab is a virtual research studio focused on pulmonary fibrosis, tissue repair, multi-omics, and AI-enabled biomedical exploration." />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --bg-soft:#111831;
+      --card:#121a35;
+      --card-2:#172143;
+      --text:#eef3ff;
+      --muted:#a8b3cf;
+      --line:rgba(255,255,255,.10);
+      --accent:#5aa2ff;
+      --accent-2:#8fbcff;
+      --glow:0 10px 30px rgba(55,130,255,.18);
+      --max:1160px;
+      --nav-h:74px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(71,118,255,.18), transparent 32%),
+        radial-gradient(circle at 80% 0%, rgba(0,203,255,.14), transparent 28%),
+        linear-gradient(180deg, #0a1020 0%, #0d1328 100%);
+      color:var(--text);
+      line-height:1.75;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:rgba(8,13,28,.75);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      min-height:var(--nav-h);
+      padding:14px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--text);
+      font-weight:800;
+      font-size:20px;
+      white-space:nowrap;
+    }
+
+    .brand-mark{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#5aa2ff,#8fbcff);
+      color:#081224;
+      font-weight:900;
+      box-shadow:var(--glow);
+    }
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:flex-end;
+      font-size:14px;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:7px 10px;
+      border-radius:999px;
+    }
+
+    .nav-links a:hover{
+      text-decoration:none;
+      color:#fff;
+      background:rgba(255,255,255,.06);
+    }
+
+    .container{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:24px;
+    }
+
+    .section{
+      scroll-margin-top:94px;
+      margin-top:24px;
+    }
+
+    .hero{
+      min-height:calc(100vh - 120px);
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:28px;
+      align-items:center;
+      padding:26px 0 18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      color:var(--accent-2);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+
+    .hero h1{
+      margin:18px 0 14px;
+      font-size:56px;
+      line-height:1.08;
+      letter-spacing:.2px;
+    }
+
+    .hero p.lead{
+      margin:0;
+      max-width:720px;
+      font-size:18px;
+      color:var(--muted);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:26px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 18px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+
+    .btn:hover{
+      text-decoration:none;
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,#5aa2ff,#8fbcff);
+      color:#081224;
+      border:none;
+      box-shadow:var(--glow);
+    }
+
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    .chip{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hero-panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 18px 50px rgba(0,0,0,.22);
+    }
+
+    .panel-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .panel-title{
+      font-size:15px;
+      color:var(--accent-2);
+      font-weight:700;
+      margin:0;
+    }
+
+    .status{
+      font-size:12px;
+      color:#9ee6b7;
+      border:1px solid rgba(158,230,183,.28);
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(158,230,183,.08);
+    }
+
+    .metrics{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .metric{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+    }
+
+    .metric strong{
+      display:block;
+      font-size:28px;
+      line-height:1.1;
+      margin-bottom:8px;
+    }
+
+    .metric span{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:26px 22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.16);
+    }
+
+    h2{
+      margin:0 0 12px;
+      font-size:28px;
+      line-height:1.2;
+    }
+
+    .section-sub{
+      margin:0 0 22px;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .focus-card,
+    .project-card,
+    .contact-card{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:20px;
+    }
+
+    .focus-card h3,
+    .project-card h3,
+    .contact-card h3{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+
+    .focus-card p,
+    .project-card p,
+    .contact-card p,
+    .about p,
+    .lab-box p{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .about ul,
+    .lab-box ul{
+      margin:12px 0 0 20px;
+      padding:0;
+      color:var(--muted);
+    }
+
+    .about li,
+    .lab-box li{
+      margin-bottom:8px;
+    }
+
+    details{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px 16px;
+      background:rgba(255,255,255,.03);
+    }
+
+    summary{
+      cursor:pointer;
+      font-weight:700;
+      list-style:none;
+    }
+
+    summary::-webkit-details-marker{display:none}
+
+    .pub{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .lab-box{
+      background:linear-gradient(180deg, rgba(90,162,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(90,162,255,.20);
+      border-radius:22px;
+      padding:22px;
+    }
+
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      padding:28px 0 34px;
+    }
+
+    @media (max-width: 980px){
+      .hero,
+      .grid-2,
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .hero h1{
+        font-size:42px;
+      }
+
+      .nav-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .nav-links{
+        justify-content:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">GX</div>
+        <span>Gongxiaoxue Lab</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#focus">Research Focus</a>
+        <a href="#projects">Projects</a>
+        <a href="#lab">Virtual Lab</a>
+        <a href="#outputs">Outputs</a>
+        <a href="#contact">Contact</a>
+        <a href="./en.html">English</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero section" id="home">
+      <div>
+        <span class="eyebrow">Virtual Research Studio · Pulmonary Fibrosis · Regeneration · Multi-omics · AI</span>
+        <h1>Building a virtual lab around pulmonary fibrosis, repair biology, and AI-enabled biomedical exploration.</h1>
+        <p class="lead">
+          Gongxiaoxue Lab is a personal research brand and virtual laboratory dedicated to pulmonary fibrosis,
+          injury-repair biology, stem-cell-associated mechanisms, multi-omics interpretation, and reproducible AI-assisted research workflows.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#lab">Explore Virtual Lab</a>
+          <a class="btn" href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">View Resume Site</a>
+          <a class="btn" href="mailto:xiaoxuegong@163.com">Contact</a>
+        </div>
+
+        <div class="hero-meta">
+          <span class="chip">Pulmonary Fibrosis</span>
+          <span class="chip">Neural Crest-Derived Cells</span>
+          <span class="chip">scRNA-seq / Spatial Transcriptomics</span>
+          <span class="chip">Proteomics</span>
+          <span class="chip">AI + Biomedical Research</span>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="panel-top">
+          <p class="panel-title">Studio Snapshot</p>
+          <span class="status">Building</span>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <strong>5+</strong>
+            <span>years of experience in primary cells, stem-cell-related work, and preclinical research</span>
+          </div>
+          <div class="metric">
+            <strong>4</strong>
+            <span>core pillars: fibrosis, repair, multi-omics, and AI-enabled virtual lab workflows</span>
+          </div>
+          <div class="metric">
+            <strong>3</strong>
+            <span>main output directions: research notes, project ideas, and reproducible analytical pipelines</span>
+          </div>
+          <div class="metric">
+            <strong>1</strong>
+            <span>long-term goal: a focused digital lab for translational pulmonary fibrosis research</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card about" id="about">
+      <h2>About</h2>
+      <p class="section-sub">Founder / Researcher / Builder</p>
+      <p>
+        I am Xiaoxue Gong, with training in public health and preventive medicine and hands-on experience in
+        pulmonary fibrosis, primary cell platforms, preclinical models, multi-omics analysis, and mechanism-oriented research.
+        This site is not just a resume extension. It is designed as a personal lab-style brand to organize ideas,
+        communicate research direction, and build a long-term virtual infrastructure for fibrosis-focused scientific work.
+      </p>
+      <ul>
+        <li>Research themes: pulmonary fibrosis, tissue repair, stem-cell-associated mechanisms, translational target exploration</li>
+        <li>Technical base: primary cell isolation and culture, mouse fibrosis models, scRNA-seq, spatial transcriptomics, proteomics</li>
+        <li>Digital direction: AI-assisted literature analysis, knowledge structuring, and reproducible biomedical workflows</li>
+      </ul>
+    </section>
+
+    <section class="section" id="focus">
+      <div class="card">
+        <h2>Research Focus</h2>
+        <p class="section-sub">What this lab-style brand is built around</p>
+
+        <div class="grid-3">
+          <div class="focus-card">
+            <h3>Pulmonary Fibrosis</h3>
+            <p>Mechanism-centered exploration of fibrosis progression, tissue remodeling, and disease-relevant target discovery.</p>
+          </div>
+
+          <div class="focus-card">
+            <h3>Repair Biology</h3>
+            <p>Investigating cellular programs involved in injury response, reparative transitions, and regeneration-associated pathways.</p>
+          </div>
+
+          <div class="focus-card">
+            <h3>Multi-omics Integration</h3>
+            <p>Using scRNA-seq, spatial transcriptomics, and proteomics to identify cell states, signaling routes, and intervention points.</p>
+          </div>
+
+          <div class="focus-card">
+            <h3>Stem / Neural Crest-Related Questions</h3>
+            <p>Exploring lineage, fate, and functional roles of neural crest-derived or stem-like reparative cell populations.</p>
+          </div>
+
+          <div class="focus-card">
+            <h3>AI for Biomedical Research</h3>
+            <p>Building an AI-enabled working layer for literature synthesis, project mapping, structured notes, and future reproducible pipelines.</p>
+          </div>
+
+          <div class="focus-card">
+            <h3>Virtual Lab Infrastructure</h3>
+            <p>Turning scattered ideas into a navigable digital workspace with projects, notebooks, concept maps, and public-facing research pages.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="card">
+        <h2>Projects</h2>
+        <p class="section-sub">Current directions and buildable modules</p>
+
+        <div class="grid-2">
+          <div class="project-card">
+            <h3>Fibrosis Question Map</h3>
+            <p>
+              A structured map of core pulmonary fibrosis questions: cell origin, epithelial injury, fibroblast activation,
+              immune remodeling, signaling axes, and repair-vs-fibrosis transitions.
+            </p>
+          </div>
+
+          <div class="project-card">
+            <h3>AI + PF Reading System</h3>
+            <p>
+              A literature digestion workflow for pulmonary fibrosis papers, combining note templates, concept indexing,
+              and topic clustering to accelerate understanding and output.
+            </p>
+          </div>
+
+          <div class="project-card">
+            <h3>Virtual Lab Notebook</h3>
+            <p>
+              A digital notebook space for reproducible analyses, study ideas, method comparisons, and pathway-level thinking.
+            </p>
+          </div>
+
+          <div class="project-card">
+            <h3>Multi-omics Insight Pages</h3>
+            <p>
+              Topic pages summarizing what scRNA-seq, spatial transcriptomics, and proteomics can reveal in repair-oriented fibrosis studies.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lab">
+      <div class="card">
+        <h2>Virtual Lab</h2>
+        <p class="section-sub">A digital laboratory in progress</p>
+
+        <div class="lab-box">
+          <p>
+            The Virtual Lab is the core concept behind this website. It is a place to accumulate research logic,
+            reusable workflows, project ideas, and translational thinking around pulmonary fibrosis.
+          </p>
+          <ul>
+            <li>Literature intelligence: paper reading notes, topic summaries, mechanism comparisons</li>
+            <li>Research structuring: concept trees, pathway maps, and disease-question decomposition</li>
+            <li>Method layer: scRNA-seq / spatial transcriptomics / proteomics interpretation templates</li>
+            <li>AI layer: assisted summarization, pipeline planning, and exploratory project generation</li>
+            <li>Output layer: research pages, proposal drafts, and future public project showcases</li>
+          </ul>
+
+          <div class="hero-actions" style="margin-top:18px;">
+            <a class="btn primary" href="./lab.html">Open Virtual Lab Page</a>
+            <a class="btn" href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">Back to Resume Site</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="outputs">
+      <div class="card">
+        <h2>Selected Outputs</h2>
+        <p class="section-sub">Representative publication-related footprint and academic direction</p>
+
+        <details open>
+          <summary>Selected publications</summary>
+          <div class="pub">• Review on neural crest cells and related biological progress</div>
+          <div class="pub">• Mouse silicosis / fibrosis model establishment by non-exposure tracheal instillation</div>
+          <div class="pub">• Studies related to Sox10 and bleomycin-induced pulmonary fibrosis</div>
+          <div class="pub">• Biomarker-oriented work based on cytokines / exosomal proteins in silicosis models</div>
+          <div class="pub">• Work involving neural crest-related cell isolation and characterization in mouse lung tissue</div>
+          <div class="pub">• Additional publication footprint spanning allergy proteomics and liver injury models</div>
+        </details>
+
+        <details>
+          <summary>What this site will eventually host</summary>
+          <div class="pub">• Topic pages for fibrosis / repair / stem-like cells</div>
+          <div class="pub">• AI-assisted literature notes and structured research digests</div>
+          <div class="pub">• Translational project concepts and preclinical question frameworks</div>
+          <div class="pub">• Public-facing mini writeups for methods, models, and hypotheses</div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="card">
+        <h2>Contact</h2>
+        <p class="section-sub">Open for research conversation, collaboration, and opportunities</p>
+
+        <div class="grid-3">
+          <div class="contact-card">
+            <h3>Email</h3>
+            <p><a href="mailto:xiaoxuegong@163.com">xiaoxuegong@163.com</a></p>
+          </div>
+
+          <div class="contact-card">
+            <h3>Resume Website</h3>
+            <p><a href="https://xiaoxuegong55-a11y.github.io/Gongxiaoxue-resume-website/" target="_blank">Open current resume site</a></p>
+          </div>
+
+          <div class="contact-card">
+            <h3>Future Channels</h3>
+            <p>LinkedIn, Google Scholar, project pages, and public lab notes can be added here later.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 Gongxiaoxue Lab · Virtual Research Studio
+    </div>
+  </main>
+</body>
+</html>
